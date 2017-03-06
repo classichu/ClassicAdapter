@@ -19,8 +19,8 @@ public class ListViewAdapter extends ClassicBaseAdapter<String> {
 
     @Override
     public void findBindView(int position, ClassicBaseViewHolder classicBaseViewHolder) {
-        TextView tv1=classicBaseViewHolder.findBindItemView(android.R.id.text1);
-        tv1.setText(mDataList.get(position));
+        TextView tv1=classicBaseViewHolder.findBindItemView(R.id.id_tv_title);
+        tv1.setText("list "+mDataList.get(position));
     }
 
 }

@@ -19,7 +19,7 @@ public class RecyclerViewAdapter extends ClassicRecyclerViewAdapter<String>{
 
     @Override
     public void findBindView(int position, ClassicRecyclerViewHolder classicRecyclerViewHolder) {
-        TextView tv1=classicRecyclerViewHolder.findBindItemView(android.R.id.text1);
+        TextView tv1=classicRecyclerViewHolder.findBindItemView(R.id.id_tv_title);
         tv1.setText("recycler "+mDataList.get(position));
     }
 }

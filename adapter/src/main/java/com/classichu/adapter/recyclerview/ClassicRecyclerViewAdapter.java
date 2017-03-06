@@ -24,7 +24,7 @@ public abstract class ClassicRecyclerViewAdapter<D> extends RecyclerView.Adapter
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-       View view = LayoutInflater.from(parent.getContext()).inflate(mItemLayoutId, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(mItemLayoutId, parent, false);
         return new ClassicRecyclerViewHolder(view);
     }
 
