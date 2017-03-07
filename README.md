@@ -11,10 +11,10 @@ Add it in your root build.gradle at the end of repositories:
 			maven { url 'https://jitpack.io' }
 		}
 	}
-Step 2. Add the dependency  [![](https://jitpack.io/v/classichu/ClassicBannerView.svg)](https://jitpack.io/#classichu/ClassicBannerView)
+Step 2. Add the dependency  [![](https://jitpack.io/v/classichu/ClassicAdapter.svg)](https://jitpack.io/#classichu/ClassicAdapter)
 
 	dependencies {
-	        compile 'com.github.classichu:ClassicBannerView:x.x.x'
+	        compile 'com.github.classichu:ClassicAdapter:x.x.x'
 	}
 
 
