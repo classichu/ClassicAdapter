@@ -130,7 +130,11 @@ public abstract class ClassicRVHeaderFooterAdapter<D> extends  RecyclerView.Adap
         } else if (mEmptyView != null && mDataList.size() == 0) {
             return VIEW_TYPE_EMPTY;
         }
-        return setupDelegate().getItemViewType(getRealPosition(position));
+        int viewType=0;
+        if (setupDelegate() != null) {
+            viewType=setupDelegate().getItemViewType(getRealPosition(position));
+        }
+        return viewType;
     }
 
     /**
