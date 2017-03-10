@@ -17,11 +17,10 @@ import java.util.List;
  * Created by louisgeek on 2017/3/6.
  */
 
-public abstract class ClassicRVHeaderFooterAdapter<D> extends ClassicRecyclerViewAdapter<D> {
+public abstract class ClassicRVHeaderFooterAdapter<D> extends  RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private static final String TAG = "ClassicRVHeaderFooterAd";
 
-    private int mItemLayoutId;
 
     private static final int VIEW_TYPE_HEADER_OFFSET = 10000;
     private static final int VIEW_TYPE_FOOTER_OFFSET = 20000;
@@ -32,12 +31,12 @@ public abstract class ClassicRVHeaderFooterAdapter<D> extends ClassicRecyclerVie
     private View mEmptyView;
 
     protected List<D> mDataList = new ArrayList<>();
+    private int mItemLayoutId;
 
     public ClassicRVHeaderFooterAdapter(List<D> mDataList, int mItemLayoutId) {
-        super(mDataList, mItemLayoutId);
-        this.mItemLayoutId=mItemLayoutId;
+        this.mDataList = mDataList;
+        this.mItemLayoutId = mItemLayoutId;
     }
-
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -134,6 +133,121 @@ public abstract class ClassicRVHeaderFooterAdapter<D> extends ClassicRecyclerVie
         return setupDelegate().getItemViewType(getRealPosition(position));
     }
 
+    /**
+     * ===========================start=========================================
+     */
+    public List<D> getDataList() {
+        return mDataList;
+    }
+
+    public D getData(int position) {
+        return mDataList.get(position);
+    }
+
+
+    public void refreshDataList(List<D> dataList) {
+        mDataList.clear();
+        if (dataList != null) {
+            mDataList.addAll(dataList);
+        }
+        notifyDataSetChanged();
+    }
+
+    public void clearDataList() {
+        mDataList.clear();
+        notifyDataSetChanged();
+    }
+
+
+    public void addDataListAtStart(List<D> dataList) {
+        if (dataList != null) {
+            mDataList.addAll(0, dataList);
+          /*  if (mHeaderView != null) {
+                notifyItemRangeInserted(0 + 1, dataList.size());
+            } else*/
+            {
+                notifyItemRangeInserted(0, dataList.size());
+            }
+        }
+    }
+
+    public void addDataListAtEnd(List<D> dataList) {
+        if (dataList != null) {
+            int positionStart = mDataList.size();
+            mDataList.addAll(dataList);
+          /*  if (mHeaderView != null) {
+                notifyItemRangeInserted(positionStart + 1, dataList.size());
+            } else */
+            {
+                notifyItemRangeInserted(positionStart, dataList.size());
+            }
+        }
+    }
+
+    public void addData(int position, D data) {
+        mDataList.add(position, data);
+       /* if (mHeaderView != null) {
+            notifyItemInserted(position + 1);
+        } else*/
+        {
+            notifyItemInserted(position);
+        }
+    }
+
+    public void addDataAtStart(D data) {
+        mDataList.add(0, data);
+      /*  if (mHeaderView != null) {
+            notifyItemInserted(0 + 1);
+        } else */
+        {
+            notifyItemInserted(0);
+        }
+    }
+
+    public void addDataAtEnd(D data) {
+        int positionStart = mDataList.size();
+        mDataList.add(data);
+       /* if (mHeaderView != null) {
+            notifyItemInserted(positionStart + 1);
+        } else */
+        {
+            notifyItemInserted(positionStart);
+        }
+    }
+
+    public void removeData(int position) {
+        int positionStart = mDataList.size();
+        mDataList.remove(position);
+       /* if (mHeaderView != null) {
+            notifyItemRemoved(positionStart + 1);
+        } else */
+        {
+            notifyItemRemoved(positionStart);
+        }
+    }
+
+    public void removeData(D data) {
+        this.removeData(mDataList.indexOf(data));
+    }
+
+
+    public void replaceData(int locationPos, D data) {
+        mDataList.set(locationPos, data);
+        /*if (mHeaderView != null) {
+            notifyItemChanged(locationPos + 1);
+        } else */
+        {
+            notifyItemChanged(locationPos);
+        }
+    }
+
+    public void replaceData(D oldData, D data) {
+        this.replaceData(mDataList.indexOf(oldData), data);
+    }
+
+    /**
+     * ===========================end========================================
+     */
     /**
      * ========================private==========================
      */
