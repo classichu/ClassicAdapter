@@ -33,7 +33,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
         ListView id_list_view = (ListView) findViewById(R.id.id_list_view);
-        id_list_view.setAdapter(new ListViewAdapter(mDatas, R.layout.item_classic_list));
+        id_list_view.setAdapter(new ListViewAdapter(mDatas,R.layout.item_classic_list));
         id_list_view.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -91,7 +91,7 @@ public class MainActivity extends AppCompatActivity {
         //id_recycler_view.setVisibility(View.GONE);
         ///// mDatas.clear();
         RecyclerViewRVHFAdapter recyclerViewRVHFAdapter =
-                new RecyclerViewRVHFAdapter(R.layout.item_classic_list, mDatas);
+                new RecyclerViewRVHFAdapter(mDatas,R.layout.item_classic_list);
         recyclerViewRVHFAdapter.setEmptyView(classicEmptyView);
         recyclerViewRVHFAdapter.setOnItemClickListener(new ClassicRVHeaderFooterAdapter.OnItemClickListener() {
             @Override

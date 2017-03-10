@@ -17,7 +17,7 @@ import java.util.List;
  * Created by louisgeek on 2017/3/6.
  */
 
-public abstract class ClassicRVHeaderFooterAdapter<D> extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+public abstract class ClassicRVHeaderFooterAdapter<D> extends ClassicRecyclerViewAdapter<D> {
 
     private static final String TAG = "ClassicRVHeaderFooterAd";
 
@@ -33,11 +33,11 @@ public abstract class ClassicRVHeaderFooterAdapter<D> extends RecyclerView.Adapt
 
     protected List<D> mDataList = new ArrayList<>();
 
-
-    public ClassicRVHeaderFooterAdapter(int itemLayoutId, List<D> dataList) {
-        mItemLayoutId = itemLayoutId;
-        mDataList = dataList;
+    public ClassicRVHeaderFooterAdapter(List<D> mDataList, int mItemLayoutId) {
+        super(mDataList, mItemLayoutId);
+        this.mItemLayoutId=mItemLayoutId;
     }
+
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
