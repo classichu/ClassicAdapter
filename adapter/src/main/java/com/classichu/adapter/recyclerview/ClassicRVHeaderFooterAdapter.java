@@ -51,6 +51,7 @@ public abstract class ClassicRVHeaderFooterAdapter<D> extends  RecyclerView.Adap
         } else if (footerView != null) {
             return new ClassicRVHeaderFooterViewHolder(footerView);
         } else if (viewType == VIEW_TYPE_EMPTY) {
+            mEmptyView.setVisibility(View.VISIBLE);
             // empty 类型
             return new ClassicRVHeaderFooterViewHolder(mEmptyView);
         } else {

@@ -5,7 +5,6 @@ import android.widget.TextView;
 
 import com.classichu.adapter.recyclerview.ClassicRVHeaderFooterAdapter;
 import com.classichu.adapter.recyclerview.ClassicRVHeaderFooterViewHolder;
-import com.classichu.adapter.recyclerview.ClassicRecyclerViewHolder;
 
 import java.util.List;
 
@@ -41,8 +40,4 @@ public class RecyclerViewRVHFAdapter extends ClassicRVHeaderFooterAdapter<String
     }
 
 
-    @Override
-    public void findBindView(int position, ClassicRecyclerViewHolder classicRecyclerViewHolder) {
-
-    }
 }

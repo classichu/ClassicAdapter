@@ -11,6 +11,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.classichu.adapter.helper.ClassicEmptyViewHelper;
 import com.classichu.adapter.recyclerview.ClassicRVHeaderFooterAdapter;
 import com.classichu.adapter.recyclerview.ClassicRecyclerViewAdapter;
 import com.classichu.adapter.widget.ClassicEmptyView;
@@ -65,28 +66,23 @@ public class MainActivity extends AppCompatActivity {
 
         //ClassicEmptyView cev= (ClassicEmptyView) findViewById(R.id.id_cev);
         //cev.setEmptyImage(null);
-
-        ClassicEmptyView classicEmptyView = new ClassicEmptyView(this);
-        classicEmptyView.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
-        classicEmptyView.setOnEmptyViewClickListener(new ClassicEmptyView.OnEmptyViewClickListener() {
+        ClassicEmptyView classicEmptyView=ClassicEmptyViewHelper.getClassicEmptyView(this, new ClassicEmptyView.OnEmptyViewClickListener() {
             @Override
             public void onClickTextView(View view) {
                 super.onClickTextView(view);
-                Toast.makeText(MainActivity.this, "onClickTextView", Toast.LENGTH_SHORT).show();
             }
 
             @Override
             public void onClickImageView(View view) {
                 super.onClickImageView(view);
-                Toast.makeText(MainActivity.this, "onClickImageView", Toast.LENGTH_SHORT).show();
             }
 
             @Override
             public void onClickEmptyView(View view) {
                 super.onClickEmptyView(view);
-                Toast.makeText(MainActivity.this, "onClickEmptyView", Toast.LENGTH_SHORT).show();
             }
         });
+
         //
         //id_recycler_view.setVisibility(View.GONE);
         ///// mDatas.clear();
