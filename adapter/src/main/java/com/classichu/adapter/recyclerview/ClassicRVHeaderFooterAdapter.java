@@ -1,11 +1,17 @@
 package com.classichu.adapter.recyclerview;
 
+import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.util.SparseArray;
+import android.util.TypedValue;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import com.classichu.adapter.listener.OnNotFastClickListener;
 import com.classichu.adapter.widget.ClassicEmptyView;
@@ -17,10 +23,13 @@ import java.util.List;
  * Created by louisgeek on 2017/3/6.
  */
 
-public abstract class ClassicRVHeaderFooterAdapter<D> extends  RecyclerView.Adapter<RecyclerView.ViewHolder> {
+public abstract class ClassicRVHeaderFooterAdapter<D> extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private static final String TAG = "ClassicRVHeaderFooterAd";
-
+    //分页第一页
+    public static final int PAGE_NUM_DEFAULT = 1;
+    //默认分页数量
+    public static final int PAGE_SIZE_DEFAULT = 10;
 
     private static final int VIEW_TYPE_HEADER_OFFSET = 10000;
     private static final int VIEW_TYPE_FOOTER_OFFSET = 20000;
@@ -32,15 +41,17 @@ public abstract class ClassicRVHeaderFooterAdapter<D> extends  RecyclerView.Adap
 
     protected List<D> mDataList = new ArrayList<>();
     private int mItemLayoutId;
+    private Context mContext;
 
-    public ClassicRVHeaderFooterAdapter(List<D> mDataList, int mItemLayoutId) {
+    public ClassicRVHeaderFooterAdapter(Context mContext,List<D> mDataList, int mItemLayoutId) {
         this.mDataList = mDataList;
         this.mItemLayoutId = mItemLayoutId;
+        this.mContext = mContext;
     }
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        Log.d(TAG, "onCreateViewHolder: viewType:" + viewType);
+        //Log.d(TAG, "onCreateViewHolder: viewType:" + viewType);
         //headerView和footerView的viewType不采用常规的方式判断，采用是否
         // header 类型
         View headerView = mHeaderViews.get(viewType);
@@ -51,7 +62,6 @@ public abstract class ClassicRVHeaderFooterAdapter<D> extends  RecyclerView.Adap
         } else if (footerView != null) {
             return new ClassicRVHeaderFooterViewHolder(footerView);
         } else if (viewType == VIEW_TYPE_EMPTY) {
-            mEmptyView.setVisibility(View.VISIBLE);
             // empty 类型
             return new ClassicRVHeaderFooterViewHolder(mEmptyView);
         } else {
@@ -63,7 +73,7 @@ public abstract class ClassicRVHeaderFooterAdapter<D> extends  RecyclerView.Adap
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-        Log.d(TAG, "onBindViewHolder: position:" + position);
+        //Log.d(TAG, "onBindViewHolder: position:" + position);
         int itemType = this.getItemViewType(position);
         // header 类型
         View headerView = mHeaderViews.get(itemType);
@@ -117,7 +127,7 @@ public abstract class ClassicRVHeaderFooterAdapter<D> extends  RecyclerView.Adap
         if (mFooterViews.size() > 0) {
             count = count + mFooterViews.size();
         }
-        Log.d(TAG, "getItemCount: count:" + count);
+        //Log.d(TAG, "getItemCount: count:" + count);
         return count;
     }
 
@@ -131,9 +141,9 @@ public abstract class ClassicRVHeaderFooterAdapter<D> extends  RecyclerView.Adap
         } else if (mEmptyView != null && mDataList.size() == 0) {
             return VIEW_TYPE_EMPTY;
         }
-        int viewType=0;
+        int viewType = 0;
         if (setupDelegate() != null) {
-            viewType=setupDelegate().getItemViewType(getRealPosition(position));
+            viewType = setupDelegate().getItemViewType(getRealPosition(position));
         }
         return viewType;
     }
@@ -261,7 +271,7 @@ public abstract class ClassicRVHeaderFooterAdapter<D> extends  RecyclerView.Adap
         if (mHeaderViews.size() > 0) {
             realPos = position - mHeaderViews.size();
         }
-        Log.d(TAG, "getRealPosition: realPos:" + realPos);
+        //###Log.d(TAG, "getRealPosition: realPos:" + realPos);
         return realPos;
     }
 
@@ -271,9 +281,9 @@ public abstract class ClassicRVHeaderFooterAdapter<D> extends  RecyclerView.Adap
             footerFirstPos = footerFirstPos + mHeaderViews.size();
         }
         if (mEmptyView != null && mDataList.size() == 0) {
-            footerFirstPos = footerFirstPos +1;//add empty view
+            footerFirstPos = footerFirstPos + 1;//add empty view
         }
-        Log.d(TAG, "getFooterFirstPosition: footerFirstPos:" + footerFirstPos);
+        //Log.d(TAG, "getFooterFirstPosition: footerFirstPos:" + footerFirstPos);
         return footerFirstPos;
     }
 
@@ -300,6 +310,159 @@ public abstract class ClassicRVHeaderFooterAdapter<D> extends  RecyclerView.Adap
         int index4footerkey = VIEW_TYPE_FOOTER_OFFSET + mFooterViews.size();//每次add mFooterViews.size()会加1 所以可以充当index
         mFooterViews.put(index4footerkey, view);
         notifyDataSetChanged();
+    }
+
+    public void removeHeaderView(View view) {
+        int index4header = mHeaderViews.indexOfValue(view);
+        if (index4header>=0) {
+            mHeaderViews.removeAt(index4header);
+            notifyDataSetChanged();
+        }
+    }
+
+    public void removeFooterView(View view) {
+        int index4footer = mFooterViews.indexOfValue(view);
+        if (index4footer>=0){
+            mFooterViews.removeAt(index4footer);
+            notifyDataSetChanged();
+        }
+    }
+
+    private TextView textView;
+    private LinearLayout linearLayout;
+    private ProgressBar progressBar;
+    private View setupLoadingView(Context context, String showText) {
+        if (linearLayout == null || textView == null) {
+            linearLayout = new LinearLayout(context);
+            linearLayout.setOrientation(LinearLayout.HORIZONTAL);
+            linearLayout.setGravity(Gravity.CENTER);
+            linearLayout.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT
+                    , ViewGroup.LayoutParams.WRAP_CONTENT));
+            linearLayout.setPadding(dp2px(context, 10), dp2px(context, 15)
+                    , dp2px(context, 10), dp2px(context, 15));
+
+            progressBar = new ProgressBar(context);
+
+            linearLayout.addView(progressBar);
+
+            textView = new TextView(context);
+            textView.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+            // textView.setText(showText);
+            textView.setPadding(dp2px(context, 10), dp2px(context, 10)
+                    , dp2px(context, 10), dp2px(context, 10));
+            textView.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 16);
+            linearLayout.addView(textView);
+        }
+        textView.setText(showText);
+
+        if ("数据加载中...".equals(showText)){
+            progressBar.setVisibility(View.VISIBLE);
+        }else {
+            progressBar.setVisibility(View.GONE);
+        }
+        return linearLayout;
+    }
+
+    private int dp2px(Context context, float dp) {
+        final float scale = context.getResources().getDisplayMetrics().density;
+        return (int) (dp * scale + 0.5f);
+    }
+
+
+    //当前页码
+    private int mPageNum = PAGE_NUM_DEFAULT;
+    //是否在加载ing
+    private boolean mDataLoading;
+    //是否所有数据加载完毕（没有下一页）
+    private boolean mLoadComplete;
+
+    /**
+     * 下一页
+     *
+     * @return
+     */
+    public int getNextPageNum() {
+        return mPageNum + 1;
+    }
+
+    /**
+     * 翻页
+     *
+     * @return
+     */
+    public void turnNextPageNum() {
+        mPageNum = mPageNum + 1;
+        //return mPageNum;
+    }
+
+    public int getPageNum() {
+        return mPageNum;
+    }
+
+    //返回已加载的数量
+    public int getNowPageCount() {
+        return mPageNum * PAGE_SIZE_DEFAULT;
+    }
+
+    public void setDataLoading(boolean dataLoading) {
+        mDataLoading = dataLoading;
+    }
+
+    public boolean isDataLoading() {
+        return mDataLoading;
+    }
+
+    public void setLoadComplete(boolean loadComplete) {
+        mLoadComplete = loadComplete;
+    }
+
+    public boolean isLoadComplete() {
+        return mLoadComplete;
+    }
+
+    /**
+     * 加载中
+     */
+    private  View mLoadingView;
+    public void showFooterViewDataLoading() {
+        //
+        setDataLoading(true);
+        setLoadComplete(false);
+        //
+        removeFooterView(mLoadingView);
+        mLoadingView = setupLoadingView(mContext,"数据加载中...");
+        addFooterView(mLoadingView);
+        // CLog.d("showFooterViewDataLoading");
+        Log.d(TAG, "showFooter showFooterViewDataLoading: ");
+    }
+
+
+    /**
+     * 上拉加载更多数据  （一页加载完成)
+     */
+    public void showFooterViewNormal() {
+        //
+        setLoadComplete(false);
+        setDataLoading(false);
+        //
+        removeFooterView(mLoadingView);
+        mLoadingView = setupLoadingView(mContext,"上拉加载更多数据");
+        addFooterView(mLoadingView);
+        Log.d(TAG, "showFooter showFooterViewNormal: ");
+    }
+
+    /**
+     * 所有数据加载完成
+     */
+    public void showFooterViewLoadComplete() {
+        //
+        setLoadComplete(true);
+        setDataLoading(false);
+        //
+        removeFooterView(mLoadingView);
+        mLoadingView = setupLoadingView(mContext,"数据加载完成");
+        addFooterView(mLoadingView);
+        Log.d(TAG, "showFooter showFooterViewLoadComplete: ");
     }
 
     /**
