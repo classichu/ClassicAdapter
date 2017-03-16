@@ -18,7 +18,7 @@ public class ClassicRVHeaderFooterViewHolder extends RecyclerView.ViewHolder{
         mItemView=itemView;
     }
 
-    public <T extends View> T findBindView(int viewId) {
+    public <T extends View> T findBindItemView(int viewId) {
         View view = mViewSparseArray.get(viewId);
         if (view == null) {
             view = mItemView.findViewById(viewId);
