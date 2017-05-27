@@ -2,11 +2,13 @@ package com.classichu.classicadapter;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -15,7 +17,6 @@ import com.classichu.adapter.helper.ClassicEmptyViewHelper;
 import com.classichu.adapter.recyclerview.ClassicRVHeaderFooterAdapter;
 import com.classichu.adapter.recyclerview.ClassicRecyclerViewAdapter;
 import com.classichu.adapter.widget.ClassicEmptyView;
-import com.yqritc.recyclerviewflexibledivider.HorizontalDividerItemDecoration;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,7 +24,7 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity {
 
     private List<String> mDatas = new ArrayList<>();
-
+    RecyclerView id_recycler_view;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -43,10 +44,21 @@ public class MainActivity extends AppCompatActivity {
         });
         id_list_view.setVisibility(View.GONE);
 
+        Button id_tb = (Button) findViewById(R.id.id_tb);
+        id_tb.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+               if (id_recycler_view.getLayoutManager() instanceof LinearLayoutManager){
+                   id_recycler_view.setLayoutManager(new GridLayoutManager(MainActivity.this,2));
+               }else{
+                   id_recycler_view.setLayoutManager(new LinearLayoutManager(MainActivity.this));
+               }
+            }
+        });
 
-        RecyclerView id_recycler_view = (RecyclerView) findViewById(R.id.id_recycler_view);
+         id_recycler_view = (RecyclerView) findViewById(R.id.id_recycler_view);
         id_recycler_view.setLayoutManager(new LinearLayoutManager(this));
-        id_recycler_view.addItemDecoration(new HorizontalDividerItemDecoration.Builder(this).build());
+       // id_recycler_view.addItemDecoration(new HorizontalDividerItemDecoration.Builder(this).build());
         RecyclerViewAdapter recyclerViewAdapter = new RecyclerViewAdapter(mDatas, R.layout.item_classic_list);
         recyclerViewAdapter.setOnItemClickListener(new ClassicRecyclerViewAdapter.OnItemClickListener() {
             @Override
@@ -87,7 +99,7 @@ public class MainActivity extends AppCompatActivity {
         //id_recycler_view.setVisibility(View.GONE);
         ///// mDatas.clear();
         RecyclerViewRVHFAdapter recyclerViewRVHFAdapter =
-                new RecyclerViewRVHFAdapter(mDatas,R.layout.item_classic_list);
+                new RecyclerViewRVHFAdapter(this,mDatas,R.layout.item_classic_list);
         recyclerViewRVHFAdapter.setEmptyView(classicEmptyView);
         recyclerViewRVHFAdapter.setOnItemClickListener(new ClassicRVHeaderFooterAdapter.OnItemClickListener() {
             @Override

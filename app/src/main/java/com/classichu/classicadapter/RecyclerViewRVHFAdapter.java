@@ -1,5 +1,6 @@
 package com.classichu.classicadapter;
 
+import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.widget.TextView;
 
@@ -14,8 +15,9 @@ import java.util.List;
 
 public class RecyclerViewRVHFAdapter extends ClassicRVHeaderFooterAdapter<String> {
 
-    public RecyclerViewRVHFAdapter(List<String> mDataList, int mItemLayoutId) {
-        super(mDataList, mItemLayoutId);
+
+    public RecyclerViewRVHFAdapter(Context mContext, List<String> mDataList, int mItemLayoutId) {
+        super(mContext, mDataList, mItemLayoutId);
     }
 
     @Override
@@ -35,7 +37,7 @@ public class RecyclerViewRVHFAdapter extends ClassicRVHeaderFooterAdapter<String
 
     @Override
     public void findBindView(int realPosition, ClassicRVHeaderFooterViewHolder classicRVHeaderFooterViewHolder) {
-        TextView id_tv_title = classicRVHeaderFooterViewHolder.findBindView(R.id.id_tv_title);
+        TextView id_tv_title = classicRVHeaderFooterViewHolder.findBindItemView(R.id.id_tv_title);
         id_tv_title.setText(mDataList.get(realPosition) + "");
     }
 
