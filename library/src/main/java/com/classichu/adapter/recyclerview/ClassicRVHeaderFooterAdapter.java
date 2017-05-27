@@ -1,6 +1,7 @@
 package com.classichu.adapter.recyclerview;
 
 import android.content.Context;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.util.SparseArray;
@@ -43,10 +44,40 @@ public abstract class ClassicRVHeaderFooterAdapter<D> extends RecyclerView.Adapt
     private int mItemLayoutId;
     private Context mContext;
 
-    public ClassicRVHeaderFooterAdapter(Context mContext,List<D> mDataList, int mItemLayoutId) {
+    public ClassicRVHeaderFooterAdapter(Context mContext, List<D> mDataList, int mItemLayoutId) {
         this.mDataList = mDataList;
         this.mItemLayoutId = mItemLayoutId;
         this.mContext = mContext;
+    }
+
+    @Override
+    public void onAttachedToRecyclerView(RecyclerView recyclerView) {
+        super.onAttachedToRecyclerView(recyclerView);
+        //为GridLayoutManager 合并头布局的跨度
+        RecyclerView.LayoutManager layoutManager = recyclerView.getLayoutManager();
+        if (layoutManager instanceof GridLayoutManager) {
+            final GridLayoutManager gridLayoutManager = (GridLayoutManager) layoutManager;
+            gridLayoutManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
+                /**
+                 * 抽象方法  返回当前index位置的item所占用的跨度的数量
+                 * ##单元格合并  就是相当于占据了设定列spanCount的数量
+                 * ##不合并     就是相当于占据了原来1个跨度
+                 *
+                 * @param position
+                 * @return
+                 */
+                @Override
+                public int getSpanSize(int position) {
+                    int spanSize=1;
+                    if (mHeaderViews.size() > 0 && position < mHeaderViews.size()) {
+                        spanSize=gridLayoutManager.getSpanCount();
+                    } else if (mFooterViews.size() > 0 && position >= getFooterFirstPosition()) {
+                        spanSize=gridLayoutManager.getSpanCount();
+                    }
+                    return spanSize;
+                }
+            });
+        }
     }
 
     @Override
@@ -314,7 +345,7 @@ public abstract class ClassicRVHeaderFooterAdapter<D> extends RecyclerView.Adapt
 
     public void removeHeaderView(View view) {
         int index4header = mHeaderViews.indexOfValue(view);
-        if (index4header>=0) {
+        if (index4header >= 0) {
             mHeaderViews.removeAt(index4header);
             notifyDataSetChanged();
         }
@@ -322,7 +353,7 @@ public abstract class ClassicRVHeaderFooterAdapter<D> extends RecyclerView.Adapt
 
     public void removeFooterView(View view) {
         int index4footer = mFooterViews.indexOfValue(view);
-        if (index4footer>=0){
+        if (index4footer >= 0) {
             mFooterViews.removeAt(index4footer);
             notifyDataSetChanged();
         }
@@ -331,6 +362,7 @@ public abstract class ClassicRVHeaderFooterAdapter<D> extends RecyclerView.Adapt
     private TextView textView;
     private LinearLayout linearLayout;
     private ProgressBar progressBar;
+
     private View setupLoadingView(Context context, String showText) {
         if (linearLayout == null || textView == null) {
             linearLayout = new LinearLayout(context);
@@ -355,9 +387,9 @@ public abstract class ClassicRVHeaderFooterAdapter<D> extends RecyclerView.Adapt
         }
         textView.setText(showText);
 
-        if ("数据加载中...".equals(showText)){
+        if ("数据加载中...".equals(showText)) {
             progressBar.setVisibility(View.VISIBLE);
-        }else {
+        } else {
             progressBar.setVisibility(View.GONE);
         }
         return linearLayout;
@@ -423,14 +455,15 @@ public abstract class ClassicRVHeaderFooterAdapter<D> extends RecyclerView.Adapt
     /**
      * 加载中
      */
-    private  View mLoadingView;
+    private View mLoadingView;
+
     public void showFooterViewDataLoading() {
         //
         setDataLoading(true);
         setLoadComplete(false);
         //
         removeFooterView(mLoadingView);
-        mLoadingView = setupLoadingView(mContext,"数据加载中...");
+        mLoadingView = setupLoadingView(mContext, "数据加载中...");
         addFooterView(mLoadingView);
         // CLog.d("showFooterViewDataLoading");
         Log.d(TAG, "showFooter showFooterViewDataLoading: ");
@@ -446,7 +479,7 @@ public abstract class ClassicRVHeaderFooterAdapter<D> extends RecyclerView.Adapt
         setDataLoading(false);
         //
         removeFooterView(mLoadingView);
-        mLoadingView = setupLoadingView(mContext,"上拉加载更多数据");
+        mLoadingView = setupLoadingView(mContext, "上拉加载更多数据");
         addFooterView(mLoadingView);
         Log.d(TAG, "showFooter showFooterViewNormal: ");
     }
@@ -460,7 +493,7 @@ public abstract class ClassicRVHeaderFooterAdapter<D> extends RecyclerView.Adapt
         setDataLoading(false);
         //
         removeFooterView(mLoadingView);
-        mLoadingView = setupLoadingView(mContext,"数据加载完成");
+        mLoadingView = setupLoadingView(mContext, "数据加载完成");
         addFooterView(mLoadingView);
         Log.d(TAG, "showFooter showFooterViewLoadComplete: ");
     }
