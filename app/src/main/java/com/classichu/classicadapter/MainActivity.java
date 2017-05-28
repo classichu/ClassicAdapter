@@ -1,6 +1,7 @@
 package com.classichu.classicadapter;
 
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
@@ -25,12 +26,13 @@ public class MainActivity extends AppCompatActivity {
 
     private List<String> mDatas = new ArrayList<>();
     RecyclerView id_recycler_view;
+    RecyclerViewRVHFAdapter recyclerViewRVHFAdapter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        for (int i = 0; i < 5; i++) {
+        for (int i = 0; i < 15; i++) {
             mDatas.add("dsdas" + i);
         }
 
@@ -49,10 +51,12 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                if (id_recycler_view.getLayoutManager() instanceof LinearLayoutManager){
-                   id_recycler_view.setLayoutManager(new GridLayoutManager(MainActivity.this,2));
+                   id_recycler_view.setLayoutManager(new GridLayoutManager(MainActivity.this,3));
                }else{
                    id_recycler_view.setLayoutManager(new LinearLayoutManager(MainActivity.this));
                }
+                id_recycler_view.setAdapter(recyclerViewRVHFAdapter);
+              //  recyclerViewRVHFAdapter.notifyDataSetChanged();
             }
         });
 
@@ -98,7 +102,7 @@ public class MainActivity extends AppCompatActivity {
         //
         //id_recycler_view.setVisibility(View.GONE);
         ///// mDatas.clear();
-        RecyclerViewRVHFAdapter recyclerViewRVHFAdapter =
+         recyclerViewRVHFAdapter =
                 new RecyclerViewRVHFAdapter(this,mDatas,R.layout.item_classic_list);
         recyclerViewRVHFAdapter.setEmptyView(classicEmptyView);
         recyclerViewRVHFAdapter.setOnItemClickListener(new ClassicRVHeaderFooterAdapter.OnItemClickListener() {
@@ -110,24 +114,28 @@ public class MainActivity extends AppCompatActivity {
         });
 
         TextView textView1 = new TextView(this);
-        textView1.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+        textView1.setBackgroundColor(ContextCompat.getColor(this,R.color.colorAccent));
+        textView1.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
         textView1.setText("head01");
 
         TextView textView2 = new TextView(this);
-        textView2.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+        textView2.setBackgroundColor(ContextCompat.getColor(this,R.color.colorAccent));
+        textView2.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
         textView2.setText("head02");
         recyclerViewRVHFAdapter.addHeaderView(textView1);
        /* recyclerViewRVHFAdapter.addHeaderView(textView2);*/
 
 
         TextView textView3 = new TextView(this);
-        textView3.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+        textView3.setBackgroundColor(ContextCompat.getColor(this,R.color.colorAccent));
+        textView3.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
         textView3.setText("foot01");
 
         TextView textView4 = new TextView(this);
-        textView4.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+        textView4.setBackgroundColor(ContextCompat.getColor(this,R.color.colorAccent));
+        textView4.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
         textView4.setText("foot02");
-        recyclerViewRVHFAdapter.addFooterView(textView3);
+        recyclerViewRVHFAdapter.addFooterView(textView4);
         /*recyclerViewRVHFAdapter.addFooterView(textView4);*/
 
         id_recycler_view.setAdapter(recyclerViewRVHFAdapter);

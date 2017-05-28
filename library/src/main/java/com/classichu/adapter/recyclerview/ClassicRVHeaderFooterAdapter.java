@@ -18,7 +18,6 @@ import android.widget.TextView;
 import com.classichu.adapter.listener.OnNotFastClickListener;
 import com.classichu.adapter.widget.ClassicEmptyView;
 
-import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -52,44 +51,50 @@ public abstract class ClassicRVHeaderFooterAdapter<D> extends RecyclerView.Adapt
         this.mContext = mContext;
     }
 
-    private void configLayoutManagerSpanInfo(RecyclerView.ViewHolder viewHolder, int position) {
-        if (viewHolder != null && viewHolder.itemView != null && viewHolder.itemView.getLayoutParams() != null) {
-
-        ViewGroup.LayoutParams vglp = viewHolder.itemView.getLayoutParams();
-        if (vglp instanceof GridLayoutManager.LayoutParams) {
-            GridLayoutManager.LayoutParams sglm_lp = (GridLayoutManager.LayoutParams) vglp;
-            int spanCout = sglm_lp.getSpanSize();
-            int spanSize = 1;
-            if (mHeaderViews.size() > 0 && position < mHeaderViews.size()) {
-                spanSize = spanCout;
-            } else if (mFooterViews.size() > 0 && position >= getFooterFirstPosition()) {
-                spanSize = spanCout;
-            }
-            //反射
-            setFieldValue(sglm_lp, "mSpanSize", spanSize);
-        } else if (vglp instanceof StaggeredGridLayoutManager.LayoutParams) {
-            //处理 StaggeredGridLayoutManager
-            StaggeredGridLayoutManager.LayoutParams sglm_lp = (StaggeredGridLayoutManager.LayoutParams) vglp;
-            if (mHeaderViews.size() > 0 && position < mHeaderViews.size()) {
-                sglm_lp.setFullSpan(true);
-            } else if (mFooterViews.size() > 0 && position >= getFooterFirstPosition()) {
-                sglm_lp.setFullSpan(true);
-            }
-        }
-
+    private void configGridLayoutManagerSpanInfo(RecyclerView recyclerView) {
+        RecyclerView.LayoutManager layoutManager = recyclerView.getLayoutManager();
+        if (layoutManager instanceof GridLayoutManager) {
+            final GridLayoutManager gridLayoutManager = (GridLayoutManager) layoutManager;
+            gridLayoutManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
+                @Override
+                public int getSpanSize(int position) {
+                    int spanSize = 1;
+                    if (mHeaderViews.size() > 0 && position < mHeaderViews.size()) {
+                        spanSize = gridLayoutManager.getSpanCount();
+                    } else if (mFooterViews.size() > 0 && position >= getFooterFirstPosition()) {
+                        spanSize = gridLayoutManager.getSpanCount();
+                    }
+                    return spanSize;
+                }
+            });
         }
     }
 
-    private <E> void setFieldValue(E eObj, String fieldName, Object value) {
-        try {
-            Field field = eObj.getClass().getDeclaredField(fieldName);
-            field.setAccessible(true);
-            field.set(eObj, value);
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-        } catch (NoSuchFieldException e) {
-            e.printStackTrace();
+    private void configStaggeredGridLayoutManagerSpanInfo(RecyclerView.ViewHolder viewHolder) {
+        if (viewHolder != null && viewHolder.itemView != null && viewHolder.itemView.getLayoutParams() != null) {
+            int position = viewHolder.getLayoutPosition();
+            ViewGroup.LayoutParams vglp = viewHolder.itemView.getLayoutParams();
+            if (vglp instanceof StaggeredGridLayoutManager.LayoutParams) {
+                StaggeredGridLayoutManager.LayoutParams sglm_lp1 = (StaggeredGridLayoutManager.LayoutParams) vglp;
+                if (mHeaderViews.size() > 0 && position < mHeaderViews.size()) {
+                    sglm_lp1.setFullSpan(true);
+                } else if (mFooterViews.size() > 0 && position >= getFooterFirstPosition()) {
+                    sglm_lp1.setFullSpan(true);
+                }
+            }
         }
+    }
+
+    @Override
+    public void onAttachedToRecyclerView(RecyclerView recyclerView) {
+        super.onAttachedToRecyclerView(recyclerView);
+        configGridLayoutManagerSpanInfo(recyclerView);
+    }
+
+    @Override
+    public void onViewAttachedToWindow(RecyclerView.ViewHolder holder) {
+        super.onViewAttachedToWindow(holder);
+        configStaggeredGridLayoutManagerSpanInfo(holder);
     }
 
     @Override
@@ -116,7 +121,6 @@ public abstract class ClassicRVHeaderFooterAdapter<D> extends RecyclerView.Adapt
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-        configLayoutManagerSpanInfo(holder, position);
         //Log.d(TAG, "onBindViewHolder: position:" + position);
         int itemType = this.getItemViewType(position);
         // header 类型
