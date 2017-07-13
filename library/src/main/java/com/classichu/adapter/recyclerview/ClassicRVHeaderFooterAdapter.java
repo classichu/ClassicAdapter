@@ -91,6 +91,13 @@ public abstract class ClassicRVHeaderFooterAdapter<D> extends RecyclerView.Adapt
         configGridLayoutManagerSpanInfo(recyclerView);
     }
 
+    /**
+     *  may  call  after  set  Grid  LayoutManager
+     * @param recyclerView
+     */
+    public void callAfterChangeGridLayoutManager(RecyclerView recyclerView){
+        configGridLayoutManagerSpanInfo(recyclerView);
+    }
     @Override
     public void onViewAttachedToWindow(RecyclerView.ViewHolder holder) {
         super.onViewAttachedToWindow(holder);

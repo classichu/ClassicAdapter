@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -50,13 +51,16 @@ public class MainActivity extends AppCompatActivity {
         id_tb.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-               if (id_recycler_view.getLayoutManager() instanceof LinearLayoutManager){
-                   id_recycler_view.setLayoutManager(new GridLayoutManager(MainActivity.this,3));
-               }else{
-                   id_recycler_view.setLayoutManager(new LinearLayoutManager(MainActivity.this));
-               }
-                id_recycler_view.setAdapter(recyclerViewRVHFAdapter);
-              //  recyclerViewRVHFAdapter.notifyDataSetChanged();
+                if (id_recycler_view.getLayoutManager() instanceof GridLayoutManager) {
+                    id_recycler_view.setLayoutManager(new LinearLayoutManager(MainActivity.this));
+                }else  if (id_recycler_view.getLayoutManager() instanceof LinearLayoutManager) {
+                    id_recycler_view.setLayoutManager(new StaggeredGridLayoutManager(2,StaggeredGridLayoutManager.VERTICAL));
+                }else {
+                    id_recycler_view.setLayoutManager(new GridLayoutManager(MainActivity.this, 2));
+                    recyclerViewRVHFAdapter.callAfterChangeGridLayoutManager(id_recycler_view);
+                }
+                //  id_recycler_view.setAdapter(recyclerViewRVHFAdapter);
+               //  recyclerViewRVHFAdapter.notifyDataSetChanged();
             }
         });
 
