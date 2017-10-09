@@ -229,95 +229,101 @@ public abstract class ClassicRVHeaderFooterAdapter<D> extends RecyclerView.Adapt
     }
 
 
-    public void addDataListAtStart(List<D> dataList) {
+    public boolean addDataListAtStart(List<D> dataList) {
+        boolean result = false;
         if (dataList != null) {
-            mDataList.addAll(0, dataList);
-          /*  if (mHeaderView != null) {
-                notifyItemRangeInserted(0 + 1, dataList.size());
-            } else*/
-            {
+            result = mDataList.addAll(0, dataList);
+            if (result) {
                 notifyItemRangeInserted(0, dataList.size());
             }
         }
+        return result;
     }
 
-    public void addDataListAtEnd(List<D> dataList) {
+    public boolean addDataListAtEnd(List<D> dataList) {
+        boolean result = false;
         if (dataList != null) {
             int positionStart = mDataList.size();
-            mDataList.addAll(dataList);
-          /*  if (mHeaderView != null) {
-                notifyItemRangeInserted(positionStart + 1, dataList.size());
-            } else */
-            {
+            result = mDataList.addAll(dataList);
+            if (result) {
                 notifyItemRangeInserted(positionStart, dataList.size());
             }
         }
+        return result;
     }
 
-    public void addData(int position, D data) {
-        mDataList.add(position, data);
-       /* if (mHeaderView != null) {
-            notifyItemInserted(position + 1);
-        } else*/
-        {
+    public boolean addData(int position, D data) {
+        boolean result = mDataList.add(data);
+        if (result) {
             notifyItemInserted(position);
         }
+        return result;
     }
 
-    public void addDataAtStart(D data) {
-        mDataList.add(0, data);
-      /*  if (mHeaderView != null) {
-            notifyItemInserted(0 + 1);
-        } else */
-        {
+    public boolean addDataAtStart(D data) {
+        boolean result = false;
+        if (data != null) {
+            result = true;
+            mDataList.add(0, data);
             notifyItemInserted(0);
         }
+        return result;
     }
 
-    public void addDataAtEnd(D data) {
-        int positionStart = mDataList.size();
-        mDataList.add(data);
-       /* if (mHeaderView != null) {
-            notifyItemInserted(positionStart + 1);
-        } else */
-        {
+    public boolean addDataAtEnd(D data) {
+        boolean result = false;
+        if (data != null) {
+            result = true;
+            int positionStart = mDataList.size();
+            mDataList.add(data);
             notifyItemInserted(positionStart);
         }
+        return result;
     }
 
-    public void removeData(int position) {
-        int positionStart = mDataList.size();
-        mDataList.remove(position);
-       /* if (mHeaderView != null) {
-            notifyItemRemoved(positionStart + 1);
-        } else */
-        {
-            notifyItemRemoved(positionStart);
+    public boolean removeData(int position) {
+        boolean result = false;
+        D d = mDataList.remove(position);
+        if (d != null) {
+            result = true;
+            notifyItemRemoved(position);
         }
+        return result;
     }
 
-    public void removeData(D data) {
-        this.removeData(mDataList.indexOf(data));
+    public boolean removeData(D data) {
+        boolean result = false;
+        int index = mDataList.indexOf(data);
+        if (index > 0) {
+            result = this.removeData(index);
+        }
+        return result;
     }
 
 
-    public void replaceData(int locationPos, D data) {
-        mDataList.set(locationPos, data);
-        /*if (mHeaderView != null) {
-            notifyItemChanged(locationPos + 1);
-        } else */
-        {
+    public boolean replaceData(int locationPos, D data) {
+        boolean result = false;
+        if (data != null) {
+            result = true;
+            mDataList.set(locationPos, data);
             notifyItemChanged(locationPos);
         }
+        return result;
     }
 
-    public void replaceData(D oldData, D data) {
-        this.replaceData(mDataList.indexOf(oldData), data);
+    public boolean replaceData(D oldData, D data) {
+        boolean result = false;
+        int index = mDataList.indexOf(oldData);
+        if (index > 0) {
+            result = this.replaceData(index, data);
+        }
+        return result;
     }
 
     /**
      * ===========================end========================================
      */
+
     /**
      * ========================private==========================
      */
