@@ -146,6 +146,7 @@ public abstract class ClassicRVHeaderFooterAdapter<D> extends RecyclerView.Adapt
         } else {
             // normal item 类型
             View view = LayoutInflater.from(parent.getContext()).inflate(mItemLayoutId, parent, false);
+            view.setClickable(true);//让RecyclerView.SimpleOnItemTouchListener实现点击时的selector生效
             return new ClassicRVHeaderFooterViewHolder(view);
         }
     }
