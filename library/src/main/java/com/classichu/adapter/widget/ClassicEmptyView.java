@@ -73,7 +73,7 @@ public class ClassicEmptyView extends LinearLayout {
             @Override
             protected void onNotFastClick(View v) {
                 if (mOnEmptyViewClickListener != null) {
-                    mOnEmptyViewClickListener.onClickEmptyView(v);
+                    mOnEmptyViewClickListener.onClickEmptyLayout(v);
                 }
             }
         });
@@ -177,7 +177,9 @@ public class ClassicEmptyView extends LinearLayout {
     }
 
     public static abstract class OnEmptyViewClickListener {
-        public void onClickEmptyView(View view) {
+        public void onClickEmptyLayout(View view) {
+        }
+        public void onClickEmptyView(View view){
         }
     }
 
