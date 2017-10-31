@@ -116,10 +116,15 @@ public abstract class ClassicRVHeaderFooterAdapter<D> extends RecyclerView.Adapt
     }
 
     private void configFooterViews4EmptyView() {
+        if (mEmptyView==null){
+            return;
+        }
         if (mDataList.isEmpty()) {
             hideFooterViews();
+            mEmptyView.setVisibility(View.VISIBLE);
         } else {
             showFooterViews();
+            mEmptyView.setVisibility(View.GONE);
         }
     }
 
