@@ -11,7 +11,7 @@ import java.util.List;
  * Created by louisgeek on 2017/3/6.
  */
 
-public class RecyclerViewAdapter extends ClassicRecyclerViewAdapter<String>{
+public class RecyclerViewAdapter extends ClassicRecyclerViewAdapter<String> {
 
     public RecyclerViewAdapter(List<String> mDataList, int mItemLayoutId) {
         super(mDataList, mItemLayoutId);
