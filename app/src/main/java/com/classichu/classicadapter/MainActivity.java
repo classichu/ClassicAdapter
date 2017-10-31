@@ -34,7 +34,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         for (int i = 0; i < 15; i++) {
-            mDatas.add("dsdas" + i);
+           //mDatas.add("dsdas" + i);
         }
 
         ListView id_list_view = (ListView) findViewById(R.id.id_list_view);
@@ -88,24 +88,14 @@ public class MainActivity extends AppCompatActivity {
         //cev.setEmptyImage(null);
         ClassicEmptyView classicEmptyView=ClassicEmptyViewHelper.getClassicEmptyView(this, new ClassicEmptyView.OnEmptyViewClickListener() {
             @Override
-            public void onClickTextView(View view) {
-                super.onClickTextView(view);
-            }
-
-            @Override
-            public void onClickImageView(View view) {
-                super.onClickImageView(view);
-            }
-
-            @Override
             public void onClickEmptyView(View view) {
                 super.onClickEmptyView(view);
+                recyclerViewRVHFAdapter.addDataAtEnd("dsadas111111");
             }
         });
 
         //
         //id_recycler_view.setVisibility(View.GONE);
-        ///// mDatas.clear();
          recyclerViewRVHFAdapter =
                 new RecyclerViewRVHFAdapter(this,mDatas,R.layout.item_classic_list);
         recyclerViewRVHFAdapter.setEmptyView(classicEmptyView);
@@ -114,6 +104,7 @@ public class MainActivity extends AppCompatActivity {
             public void onItemClick(View itemView, int position) {
                 super.onItemClick(itemView, position);
                 Toast.makeText(MainActivity.this, "recyclerViewRVHFAdapter:" + position, Toast.LENGTH_SHORT).show();
+                recyclerViewRVHFAdapter.refreshDataList(new ArrayList<String>());
             }
         });
 

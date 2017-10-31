@@ -83,7 +83,7 @@ public class ClassicEmptyView extends LinearLayout {
             @Override
             protected void onNotFastClick(View v) {
                 if (mOnEmptyViewClickListener != null) {
-                    mOnEmptyViewClickListener.onClickImageView(v);
+                    mOnEmptyViewClickListener.onClickEmptyView(v);
                 }
             }
         });
@@ -93,7 +93,7 @@ public class ClassicEmptyView extends LinearLayout {
             @Override
             protected void onNotFastClick(View v) {
                 if (mOnEmptyViewClickListener != null) {
-                    mOnEmptyViewClickListener.onClickTextView(v);
+                    mOnEmptyViewClickListener.onClickEmptyView(v);
                 }
             }
         });
@@ -177,13 +177,6 @@ public class ClassicEmptyView extends LinearLayout {
     }
 
     public static abstract class OnEmptyViewClickListener {
-
-        public void onClickTextView(View view) {
-        }
-
-        public void onClickImageView(View view) {
-        }
-
         public void onClickEmptyView(View view) {
         }
     }

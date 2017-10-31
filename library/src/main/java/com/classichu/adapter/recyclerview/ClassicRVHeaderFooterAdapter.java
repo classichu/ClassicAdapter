@@ -33,9 +33,9 @@ public abstract class ClassicRVHeaderFooterAdapter<D> extends RecyclerView.Adapt
     //默认分页数量
     public static final int PAGE_SIZE_DEFAULT = 10;
 
-    private static final int VIEW_TYPE_HEADER_OFFSET = 10000;
-    private static final int VIEW_TYPE_FOOTER_OFFSET = 20000;
-    private static final int VIEW_TYPE_EMPTY = 1992;
+    private static final int VIEW_TYPE_HEADER_OFFSET = 100000;
+    private static final int VIEW_TYPE_FOOTER_OFFSET = 200000;
+    private static final int VIEW_TYPE_EMPTY = -1992;
 
     private SparseArray<View> mHeaderViews = new SparseArray<>();
     private SparseArray<View> mFooterViews = new SparseArray<>();
@@ -63,6 +63,9 @@ public abstract class ClassicRVHeaderFooterAdapter<D> extends RecyclerView.Adapt
                         spanSize = gridLayoutManager.getSpanCount();
                     } else if (mFooterViews.size() > 0 && position >= getFooterFirstPosition()) {
                         spanSize = gridLayoutManager.getSpanCount();
+                    } else if (getItemViewType(position) == VIEW_TYPE_EMPTY) {
+                        // empty 类型
+                        spanSize = gridLayoutManager.getSpanCount();
                     }
                     return spanSize;
                 }
@@ -80,6 +83,9 @@ public abstract class ClassicRVHeaderFooterAdapter<D> extends RecyclerView.Adapt
                     sglm_lp1.setFullSpan(true);
                 } else if (mFooterViews.size() > 0 && position >= getFooterFirstPosition()) {
                     sglm_lp1.setFullSpan(true);
+                } else if (getItemViewType(position) == VIEW_TYPE_EMPTY) {
+                    // empty 类型
+                    sglm_lp1.setFullSpan(true);
                 }
             }
         }
@@ -88,20 +94,33 @@ public abstract class ClassicRVHeaderFooterAdapter<D> extends RecyclerView.Adapt
     @Override
     public void onAttachedToRecyclerView(RecyclerView recyclerView) {
         super.onAttachedToRecyclerView(recyclerView);
+        Log.i(TAG, "onAttachedToRecyclerView: ");
         configGridLayoutManagerSpanInfo(recyclerView);
     }
 
     /**
-     *  may  call  after  set  Grid  LayoutManager
+     * may  call  after  set  Grid  LayoutManager
+     *
      * @param recyclerView
      */
-    public void callAfterChangeGridLayoutManager(RecyclerView recyclerView){
+    public void callAfterChangeGridLayoutManager(RecyclerView recyclerView) {
         configGridLayoutManagerSpanInfo(recyclerView);
     }
+
     @Override
     public void onViewAttachedToWindow(RecyclerView.ViewHolder holder) {
         super.onViewAttachedToWindow(holder);
+        Log.i(TAG, "onViewAttachedToWindow: ");
         configStaggeredGridLayoutManagerSpanInfo(holder);
+        configFooterViews4EmptyView();
+    }
+
+    private void configFooterViews4EmptyView() {
+        if (mDataList.isEmpty()) {
+            hideFooterViews();
+        } else {
+            showFooterViews();
+        }
     }
 
     @Override
@@ -193,7 +212,7 @@ public abstract class ClassicRVHeaderFooterAdapter<D> extends RecyclerView.Adapt
             return mHeaderViews.keyAt(position);//返回存入的key作为view type
         } else if (mFooterViews.size() > 0 && position >= getFooterFirstPosition()) {
             return mFooterViews.keyAt(position - getFooterFirstPosition());//返回存入的key作为view type
-        } else if (mEmptyView != null && mDataList.size() == 0) {
+        } else if (mEmptyView != null &&mDataList.isEmpty()) {
             return VIEW_TYPE_EMPTY;
         }
         int viewType = 0;
@@ -206,6 +225,10 @@ public abstract class ClassicRVHeaderFooterAdapter<D> extends RecyclerView.Adapt
     /**
      * ===========================start=========================================
      */
+    public List<D> hideHeader() {
+        return mDataList;
+    }
+
     public List<D> getDataList() {
         return mDataList;
     }
@@ -359,6 +382,38 @@ public abstract class ClassicRVHeaderFooterAdapter<D> extends RecyclerView.Adapt
     public void setEmptyView(ClassicEmptyView classicEmptyView) {
         mEmptyView = classicEmptyView;
         notifyDataSetChanged();
+    }
+
+    public void hideHeaderViews() {
+        if (mHeaderViews != null && mHeaderViews.size() > 0) {
+            for (int i = 0; i < mHeaderViews.size(); i++) {
+                mHeaderViews.valueAt(i).setVisibility(View.GONE);
+            }
+        }
+    }
+
+    public void hideFooterViews() {
+        if (mFooterViews != null && mFooterViews.size() > 0) {
+            for (int i = 0; i < mFooterViews.size(); i++) {
+                mFooterViews.valueAt(i).setVisibility(View.GONE);
+            }
+        }
+    }
+
+    public void showHeaderViews() {
+        if (mHeaderViews != null && mHeaderViews.size() > 0) {
+            for (int i = 0; i < mHeaderViews.size(); i++) {
+                mHeaderViews.valueAt(i).setVisibility(View.VISIBLE);
+            }
+        }
+    }
+
+    public void showFooterViews() {
+        if (mFooterViews != null && mFooterViews.size() > 0) {
+            for (int i = 0; i < mFooterViews.size(); i++) {
+                mFooterViews.valueAt(i).setVisibility(View.VISIBLE);
+            }
+        }
     }
 
     public void addHeaderView(View view) {
