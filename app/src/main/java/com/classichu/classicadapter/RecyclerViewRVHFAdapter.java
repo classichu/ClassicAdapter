@@ -7,8 +7,6 @@ import android.widget.TextView;
 import com.classichu.adapter.recyclerview.ClassicRVHeaderFooterAdapter;
 import com.classichu.adapter.recyclerview.ClassicRVHeaderFooterViewHolder;
 
-import java.util.List;
-
 /**
  * Created by louisgeek on 2017/3/6.
  */
@@ -16,8 +14,8 @@ import java.util.List;
 public class RecyclerViewRVHFAdapter extends ClassicRVHeaderFooterAdapter<String> {
 
 
-    public RecyclerViewRVHFAdapter(Context mContext, List<String> mDataList, int mItemLayoutId) {
-        super(mContext, mDataList, mItemLayoutId);
+    public RecyclerViewRVHFAdapter(Context mContext, int mItemLayoutId) {
+        super(mContext,mItemLayoutId);
     }
 
     @Override

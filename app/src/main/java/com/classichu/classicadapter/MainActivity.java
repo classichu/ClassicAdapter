@@ -1,6 +1,7 @@
 package com.classichu.classicadapter;
 
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
@@ -17,8 +18,6 @@ import android.widget.Toast;
 
 import com.classichu.adapter.helper.ClassicEmptyViewHelper;
 import com.classichu.adapter.listener.OnRVItemTouchListener;
-import com.classichu.adapter.recyclerview.ClassicRVHeaderFooterAdapter;
-import com.classichu.adapter.recyclerview.ClassicRecyclerViewAdapter;
 import com.classichu.adapter.widget.ClassicEmptyView;
 
 import java.util.ArrayList;
@@ -69,20 +68,6 @@ public class MainActivity extends AppCompatActivity {
         id_recycler_view.setLayoutManager(new LinearLayoutManager(this));
        // id_recycler_view.addItemDecoration(new HorizontalDividerItemDecoration.Builder(this).build());
         RecyclerViewAdapter recyclerViewAdapter = new RecyclerViewAdapter(mDatas, R.layout.item_classic_list);
-        recyclerViewAdapter.setOnItemClickListener(new ClassicRecyclerViewAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(View itemView, int position) {
-                super.onItemClick(itemView, position);
-                Toast.makeText(MainActivity.this, "rv onItemClick" + position, Toast.LENGTH_SHORT).show();
-            }
-
-            @Override
-            public boolean onItemLongClick(View itemView, int position) {
-                super.onItemLongClick(itemView, position);
-                Toast.makeText(MainActivity.this, "rv onItemLongClick" + position, Toast.LENGTH_SHORT).show();
-                return true;
-            }
-        });
         //## id_recycler_view.setAdapter(recyclerViewAdapter);
 
         //ClassicEmptyView cev= (ClassicEmptyView) findViewById(R.id.id_cev);
@@ -97,17 +82,11 @@ public class MainActivity extends AppCompatActivity {
 
         //
         //id_recycler_view.setVisibility(View.GONE);
+
          recyclerViewRVHFAdapter =
-                new RecyclerViewRVHFAdapter(this,mDatas,R.layout.item_classic_list);
+                new RecyclerViewRVHFAdapter(this,R.layout.item_classic_list);
         recyclerViewRVHFAdapter.setEmptyView(classicEmptyView);
-        recyclerViewRVHFAdapter.setOnItemClickListener(new ClassicRVHeaderFooterAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(View itemView, int position) {
-                super.onItemClick(itemView, position);
-                Toast.makeText(MainActivity.this, "recyclerViewRVHFAdapter:" + position, Toast.LENGTH_SHORT).show();
-                recyclerViewRVHFAdapter.refreshDataList(new ArrayList<String>());
-            }
-        });
+
 
         TextView textView1 = new TextView(this);
         textView1.setBackgroundColor(ContextCompat.getColor(this,R.color.colorAccent));
@@ -147,5 +126,13 @@ public class MainActivity extends AppCompatActivity {
             }
         });
         id_recycler_view.setAdapter(recyclerViewRVHFAdapter);
+
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                //   recyclerViewRVHFAdapter.setEmptyViewVisibility();
+               recyclerViewRVHFAdapter.addDataAtEnd("dsadasdas");
+            }
+        },5000);
     }
 }

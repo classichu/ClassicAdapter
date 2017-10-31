@@ -68,9 +68,9 @@ public class ClassicEmptyView extends LinearLayout {
         id_iv_empty_view = (ImageView) mEmptyView.findViewById(R.id.id_iv_empty_view);
         id_tv_empty_view = (TextView) mEmptyView.findViewById(R.id.id_tv_empty_view);
 
-        id_ll_empty_view.setOnClickListener(new OnNotFastClickListener() {
+        id_ll_empty_view.setOnClickListener(new OnClickListener() {
             @Override
-            protected void onNotFastClick(View v) {
+            public void onClick(View v) {
                 if (mOnEmptyViewClickListener != null) {
                     mOnEmptyViewClickListener.onClickEmptyLayout(v);
                 }
@@ -78,9 +78,9 @@ public class ClassicEmptyView extends LinearLayout {
         });
 
 
-        id_iv_empty_view.setOnClickListener(new OnNotFastClickListener() {
+        id_iv_empty_view.setOnClickListener(new OnClickListener() {
             @Override
-            protected void onNotFastClick(View v) {
+            public void onClick(View v) {
                 if (mOnEmptyViewClickListener != null) {
                     mOnEmptyViewClickListener.onClickEmptyView(v);
                 }
@@ -88,9 +88,9 @@ public class ClassicEmptyView extends LinearLayout {
         });
 
 
-        id_tv_empty_view.setOnClickListener(new OnNotFastClickListener() {
+        id_tv_empty_view.setOnClickListener(new OnClickListener() {
             @Override
-            protected void onNotFastClick(View v) {
+            public void onClick(View v) {
                 if (mOnEmptyViewClickListener != null) {
                     mOnEmptyViewClickListener.onClickEmptyView(v);
                 }
@@ -178,7 +178,8 @@ public class ClassicEmptyView extends LinearLayout {
     public static abstract class OnEmptyViewClickListener {
         public void onClickEmptyLayout(View view) {
         }
-        public void onClickEmptyView(View view){
+
+        public void onClickEmptyView(View view) {
         }
     }
 

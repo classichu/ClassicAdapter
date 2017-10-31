@@ -1,6 +1,7 @@
 package com.classichu.adapter.listener;
 
 import android.support.v7.widget.RecyclerView;
+import android.view.View;
 
 /**
  * Created by Classichu on 2017/10/8.
@@ -13,12 +14,12 @@ public class SimpleOnRVItemTouchListener extends OnRVItemTouchListener {
     }
 
     @Override
-    public void onItemClick(RecyclerView.ViewHolder viewHolder) {
+    public void onItemClick(View view, int position) {
 
     }
 
     @Override
-    public void onItemLongClick(RecyclerView.ViewHolder viewHolder) {
+    public void onItemLongClick(View view, int position) {
 
     }
 }

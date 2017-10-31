@@ -4,6 +4,7 @@ import android.content.Context;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
+import android.text.TextUtils;
 import android.util.Log;
 import android.util.SparseArray;
 import android.util.TypedValue;
@@ -40,12 +41,11 @@ public abstract class ClassicRVHeaderFooterAdapter<D> extends RecyclerView.Adapt
     private SparseArray<View> mFooterViews = new SparseArray<>();
     private View mEmptyView;
 
-    protected List<D> mDataList = new ArrayList<>();
+    protected List<D> mDataList=new ArrayList<>();
     private int mItemLayoutId;
     private Context mContext;
 
-    public ClassicRVHeaderFooterAdapter(Context mContext, List<D> mDataList, int mItemLayoutId) {
-        this.mDataList = mDataList;
+    public ClassicRVHeaderFooterAdapter(Context mContext, int mItemLayoutId) {
         this.mItemLayoutId = mItemLayoutId;
         this.mContext = mContext;
     }
@@ -114,6 +114,9 @@ public abstract class ClassicRVHeaderFooterAdapter<D> extends RecyclerView.Adapt
         configFooterViews4EmptyView();
     }
 
+    /**
+     * 如果有EmptyView不显示FooterView
+     */
     private void configFooterViews4EmptyView() {
         if (mEmptyView == null) {
             return;
@@ -377,12 +380,24 @@ public abstract class ClassicRVHeaderFooterAdapter<D> extends RecyclerView.Adapt
      */
     public void setEmptyView(View emptyView) {
         mEmptyView = emptyView;
+        mEmptyView.setVisibility(View.GONE);
         notifyDataSetChanged();
     }
 
     public void setEmptyView(ClassicEmptyView classicEmptyView) {
         mEmptyView = classicEmptyView;
+        mEmptyView.setVisibility(View.GONE);
         notifyDataSetChanged();
+    }
+
+    public void setEmptyViewVisibility() {
+        setEmptyViewVisibility(View.VISIBLE);
+    }
+
+    public void setEmptyViewVisibility(int visibility) {
+        if (mEmptyView != null) {
+            mEmptyView.setVisibility(visibility);
+        }
     }
 
     public void hideHeaderViews() {
@@ -449,7 +464,7 @@ public abstract class ClassicRVHeaderFooterAdapter<D> extends RecyclerView.Adapt
     private LinearLayout linearLayout;
     private ProgressBar progressBar;
 
-    private View setupLoadingView(Context context, String showText) {
+    private View setupLoadingView(Context context, String showText, boolean showProgressBar) {
         if (linearLayout == null || textView == null) {
             linearLayout = new LinearLayout(context);
             linearLayout.setOrientation(LinearLayout.HORIZONTAL);
@@ -473,7 +488,7 @@ public abstract class ClassicRVHeaderFooterAdapter<D> extends RecyclerView.Adapt
         }
         textView.setText(showText);
 
-        if ("数据加载中...".equals(showText)) {
+        if (showProgressBar) {
             progressBar.setVisibility(View.VISIBLE);
         } else {
             progressBar.setVisibility(View.GONE);
@@ -543,13 +558,13 @@ public abstract class ClassicRVHeaderFooterAdapter<D> extends RecyclerView.Adapt
      */
     private View mLoadingView;
 
-    public void showFooterViewDataLoading() {
+    public void showFooterViewDataLoading(String showText) {
         //
         setDataLoading(true);
         setLoadComplete(false);
         //
         removeFooterView(mLoadingView);
-        mLoadingView = setupLoadingView(mContext, "数据加载中...");
+        mLoadingView = setupLoadingView(mContext, TextUtils.isEmpty(showText) ? "数据加载中..." : showText, true);
         addFooterView(mLoadingView);
         // CLog.d("showFooterViewDataLoading");
         Log.d(TAG, "showFooter showFooterViewDataLoading: ");
@@ -559,13 +574,13 @@ public abstract class ClassicRVHeaderFooterAdapter<D> extends RecyclerView.Adapt
     /**
      * 上拉加载更多数据  （一页加载完成)
      */
-    public void showFooterViewNormal() {
+    public void showFooterViewNormal(String showText) {
         //
         setLoadComplete(false);
         setDataLoading(false);
         //
         removeFooterView(mLoadingView);
-        mLoadingView = setupLoadingView(mContext, "上拉加载更多数据");
+        mLoadingView = setupLoadingView(mContext, TextUtils.isEmpty(showText) ? "上拉加载更多数据" : showText, false);
         addFooterView(mLoadingView);
         Log.d(TAG, "showFooter showFooterViewNormal: ");
     }
@@ -573,13 +588,13 @@ public abstract class ClassicRVHeaderFooterAdapter<D> extends RecyclerView.Adapt
     /**
      * 所有数据加载完成
      */
-    public void showFooterViewLoadComplete() {
+    public void showFooterViewLoadComplete(String showText) {
         //
         setLoadComplete(true);
         setDataLoading(false);
         //
         removeFooterView(mLoadingView);
-        mLoadingView = setupLoadingView(mContext, "数据加载完成");
+        mLoadingView = setupLoadingView(mContext, TextUtils.isEmpty(showText) ? "数据加载完成" : showText, false);
         addFooterView(mLoadingView);
         Log.d(TAG, "showFooter showFooterViewLoadComplete: ");
     }
