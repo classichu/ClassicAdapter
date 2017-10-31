@@ -24,22 +24,25 @@ public abstract class OnRVItemTouchListener extends RecyclerView.SimpleOnItemTou
 
                         //通过点击的x,y 获得对应的item
                         View itemView = mRecyclerView.findChildViewUnder(e.getX(), e.getY());
-                        RecyclerView.ViewHolder viewHolder = mRecyclerView.getChildViewHolder(itemView);
-                        int position = mRecyclerView.getChildAdapterPosition(itemView);
                         //
-                        onItemClick(itemView,position);
-
-                        return false;
+                        if (itemView!=null) {
+                            RecyclerView.ViewHolder viewHolder = mRecyclerView.getChildViewHolder(itemView);
+                            int position = mRecyclerView.getChildAdapterPosition(itemView);
+                            onItemClick(itemView, position);
+                        }
+                        return true;
                     }
 
                     @Override
                     public void onLongPress(MotionEvent e) {
                         //通过点击的x,y 获得对应的item
                         View itemView = mRecyclerView.findChildViewUnder(e.getX(), e.getY());
-                        RecyclerView.ViewHolder viewHolder = mRecyclerView.getChildViewHolder(itemView);
-                        int position = mRecyclerView.getChildAdapterPosition(itemView);
-                        //
-                        onItemLongClick(itemView,position);
+                        if (itemView!=null) {
+                            RecyclerView.ViewHolder viewHolder = mRecyclerView.getChildViewHolder(itemView);
+                            int position = mRecyclerView.getChildAdapterPosition(itemView);
+                            //
+                            onItemLongClick(itemView, position);
+                        }
                     }
                 });
     }
@@ -48,6 +51,12 @@ public abstract class OnRVItemTouchListener extends RecyclerView.SimpleOnItemTou
     @Override
     public void onTouchEvent(RecyclerView rv, MotionEvent e) {
         mGestureDetectorCompat.onTouchEvent(e);
+    }
+
+    @Override
+    public boolean onInterceptTouchEvent(RecyclerView rv, MotionEvent e) {
+        mGestureDetectorCompat.onTouchEvent(e);
+        return super.onInterceptTouchEvent(rv, e);
     }
 
     public abstract void onItemClick(View view, int position);

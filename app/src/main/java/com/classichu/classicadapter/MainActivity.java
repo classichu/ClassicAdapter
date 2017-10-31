@@ -112,17 +112,16 @@ public class MainActivity extends AppCompatActivity {
         textView4.setText("foot02");
         recyclerViewRVHFAdapter.addFooterView(textView4);
         /*recyclerViewRVHFAdapter.addFooterView(textView4);*/
-
         id_recycler_view.addOnItemTouchListener(new OnRVItemTouchListener(id_recycler_view) {
 
             @Override
             public void onItemClick(View view, int position) {
-
+                Toast.makeText(MainActivity.this, "onItemClick", Toast.LENGTH_SHORT).show();
             }
 
             @Override
             public void onItemLongClick(View view, int position) {
-
+                Toast.makeText(MainActivity.this, "onItemLongClick", Toast.LENGTH_SHORT).show();
             }
         });
         id_recycler_view.setAdapter(recyclerViewRVHFAdapter);
