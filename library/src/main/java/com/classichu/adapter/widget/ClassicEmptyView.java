@@ -15,7 +15,6 @@ import android.widget.TextView;
 
 import com.classichu.adapter.R;
 import com.classichu.adapter.helper.ImageOrVectorResHelper;
-import com.classichu.adapter.listener.OnNotFastClickListener;
 
 
 /**

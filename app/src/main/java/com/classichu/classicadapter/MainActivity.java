@@ -16,6 +16,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.classichu.adapter.helper.ClassicEmptyViewHelper;
+import com.classichu.adapter.listener.OnRVItemTouchListener;
 import com.classichu.adapter.recyclerview.ClassicRVHeaderFooterAdapter;
 import com.classichu.adapter.recyclerview.ClassicRecyclerViewAdapter;
 import com.classichu.adapter.widget.ClassicEmptyView;
@@ -133,6 +134,18 @@ public class MainActivity extends AppCompatActivity {
         recyclerViewRVHFAdapter.addFooterView(textView4);
         /*recyclerViewRVHFAdapter.addFooterView(textView4);*/
 
+        id_recycler_view.addOnItemTouchListener(new OnRVItemTouchListener(id_recycler_view) {
+
+            @Override
+            public void onItemClick(View view, int position) {
+
+            }
+
+            @Override
+            public void onItemLongClick(View view, int position) {
+
+            }
+        });
         id_recycler_view.setAdapter(recyclerViewRVHFAdapter);
     }
 }

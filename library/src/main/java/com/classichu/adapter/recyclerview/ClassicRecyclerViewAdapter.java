@@ -5,8 +5,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.classichu.adapter.listener.OnNotFastClickListener;
-
 import java.util.List;
 
 /**
@@ -33,9 +31,9 @@ public abstract class ClassicRecyclerViewAdapter<D> extends RecyclerView.Adapter
         if (holder instanceof ClassicRecyclerViewHolder) {
             //抽象方法
             this.findBindView(position, (ClassicRecyclerViewHolder) holder);
-            holder.itemView.setOnClickListener(new OnNotFastClickListener() {
+        /*    holder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
-                protected void onNotFastClick(View v) {
+                public void onClick(View v) {
                     if (onItemClickListener != null) {
                         onItemClickListener.onItemClick(v, position);
                     }
@@ -49,7 +47,7 @@ public abstract class ClassicRecyclerViewAdapter<D> extends RecyclerView.Adapter
                     }
                     return false;
                 }
-            });
+            });*/
         }
     }
 
@@ -181,21 +179,5 @@ public abstract class ClassicRecyclerViewAdapter<D> extends RecyclerView.Adapter
      */
     public abstract void findBindView(int position, ClassicRecyclerViewHolder classicRecyclerViewHolder);
 
-
-    public void setOnItemClickListener(OnItemClickListener onItemClickListener) {
-        this.onItemClickListener = onItemClickListener;
-    }
-
-    public abstract static class OnItemClickListener {
-        public void onItemClick(View itemView, int position) {
-
-        }
-
-        public boolean onItemLongClick(View itemView, int position) {
-            return false;
-        }
-    }
-
-    private OnItemClickListener onItemClickListener;
 
 }

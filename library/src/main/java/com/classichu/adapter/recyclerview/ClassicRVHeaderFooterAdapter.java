@@ -15,7 +15,6 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.classichu.adapter.listener.OnNotFastClickListener;
 import com.classichu.adapter.widget.ClassicEmptyView;
 
 import java.util.ArrayList;
@@ -116,15 +115,13 @@ public abstract class ClassicRVHeaderFooterAdapter<D> extends RecyclerView.Adapt
     }
 
     private void configFooterViews4EmptyView() {
-        if (mEmptyView==null){
+        if (mEmptyView == null) {
             return;
         }
         if (mDataList.isEmpty()) {
             hideFooterViews();
-            mEmptyView.setVisibility(View.VISIBLE);
         } else {
             showFooterViews();
-            mEmptyView.setVisibility(View.GONE);
         }
     }
 
@@ -173,10 +170,9 @@ public abstract class ClassicRVHeaderFooterAdapter<D> extends RecyclerView.Adapt
         if (holder instanceof ClassicRVHeaderFooterViewHolder) {
             //抽象方法
             this.findBindView(realPosition, (ClassicRVHeaderFooterViewHolder) holder);
-
-            holder.itemView.setOnClickListener(new OnNotFastClickListener() {
+         /*   holder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
-                protected void onNotFastClick(View v) {
+                public void onClick(View v) {
                     if (onItemClickListener != null) {
                         onItemClickListener.onItemClick(v, realPosition);
                     }
@@ -190,7 +186,7 @@ public abstract class ClassicRVHeaderFooterAdapter<D> extends RecyclerView.Adapt
                     }
                     return false;
                 }
-            });
+            });*/
         }
     }
 
@@ -217,7 +213,7 @@ public abstract class ClassicRVHeaderFooterAdapter<D> extends RecyclerView.Adapt
             return mHeaderViews.keyAt(position);//返回存入的key作为view type
         } else if (mFooterViews.size() > 0 && position >= getFooterFirstPosition()) {
             return mFooterViews.keyAt(position - getFooterFirstPosition());//返回存入的key作为view type
-        } else if (mEmptyView != null &&mDataList.isEmpty()) {
+        } else if (mEmptyView != null && mDataList.isEmpty()) {
             return VIEW_TYPE_EMPTY;
         }
         int viewType = 0;
@@ -602,20 +598,4 @@ public abstract class ClassicRVHeaderFooterAdapter<D> extends RecyclerView.Adapt
         int getItemViewType(int realPosition);
     }
 
-
-    public void setOnItemClickListener(OnItemClickListener onItemClickListener) {
-        this.onItemClickListener = onItemClickListener;
-    }
-
-    public abstract static class OnItemClickListener {
-        public void onItemClick(View itemView, int position) {
-
-        }
-
-        public boolean onItemLongClick(View itemView, int position) {
-            return false;
-        }
-    }
-
-    private OnItemClickListener onItemClickListener;
 }
