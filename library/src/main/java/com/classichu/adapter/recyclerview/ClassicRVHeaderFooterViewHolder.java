@@ -11,7 +11,7 @@ import android.view.View;
 public class ClassicRVHeaderFooterViewHolder extends RecyclerView.ViewHolder{
 
     private SparseArray<View> mViewSparseArray = new SparseArray<>();
-    private View mItemView;
+    protected View mItemView;
 
     public ClassicRVHeaderFooterViewHolder(View itemView) {
         super(itemView);

@@ -9,7 +9,7 @@ import android.view.View;
 
 public class ClassicBaseViewHolder {
     private SparseArray<View> mViewSparseArray = new SparseArray<>();
-    private View mItemView;
+    protected View mItemView;
 
 
     public ClassicBaseViewHolder(View itemView) {

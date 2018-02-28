@@ -174,7 +174,7 @@ public abstract class ClassicRVHeaderFooterAdapter<D> extends RecyclerView.Adapt
         if (holder instanceof ClassicRVHeaderFooterViewHolder) {
             //抽象方法
             this.findBindView(realPosition, (ClassicRVHeaderFooterViewHolder) holder);
-         /*   holder.itemView.setOnClickListener(new View.OnClickListener() {
+            holder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     if (onItemClickListener != null) {
@@ -190,7 +190,7 @@ public abstract class ClassicRVHeaderFooterAdapter<D> extends RecyclerView.Adapt
                     }
                     return false;
                 }
-            });*/
+            });
         }
     }
 
@@ -612,6 +612,20 @@ public abstract class ClassicRVHeaderFooterAdapter<D> extends RecyclerView.Adapt
         void onBindViewHolder(RecyclerView.ViewHolder viewHolder, int realPosition);
 
         int getItemViewType(int realPosition);
+    }
+
+    private OnItemClickListener onItemClickListener;
+    public void setOnItemClickListener(OnItemClickListener onItemClickListener) {
+        this.onItemClickListener = onItemClickListener;
+    }
+    public static abstract class  OnItemClickListener {
+
+        public void onItemClick(View view, int position) {
+        }
+
+        public boolean onItemLongClick(View view, int position) {
+            return false;
+        }
     }
 
 }

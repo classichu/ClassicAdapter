@@ -18,6 +18,7 @@ import android.widget.Toast;
 
 import com.classichu.adapter.helper.ClassicEmptyViewHelper;
 import com.classichu.adapter.listener.OnRVItemTouchListener;
+import com.classichu.adapter.recyclerview.ClassicRVHeaderFooterAdapter;
 import com.classichu.adapter.widget.ClassicEmptyView;
 
 import java.util.ArrayList;
@@ -112,6 +113,17 @@ public class MainActivity extends AppCompatActivity {
         textView4.setText("foot02");
         recyclerViewRVHFAdapter.addFooterView(textView4);
         /*recyclerViewRVHFAdapter.addFooterView(textView4);*/
+        recyclerViewRVHFAdapter.setOnItemClickListener(new ClassicRVHeaderFooterAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(View view, int position) {
+                super.onItemClick(view, position);
+            }
+
+            @Override
+            public boolean onItemLongClick(View view, int position) {
+                return super.onItemLongClick(view, position);
+            }
+        });
         id_recycler_view.addOnItemTouchListener(new OnRVItemTouchListener(id_recycler_view) {
 
             @Override

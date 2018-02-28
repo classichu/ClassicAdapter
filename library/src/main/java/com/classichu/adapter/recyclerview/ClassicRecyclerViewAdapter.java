@@ -31,7 +31,7 @@ public abstract class ClassicRecyclerViewAdapter<D> extends RecyclerView.Adapter
         if (holder instanceof ClassicRecyclerViewHolder) {
             //抽象方法
             this.findBindView(position, (ClassicRecyclerViewHolder) holder);
-        /*    holder.itemView.setOnClickListener(new View.OnClickListener() {
+            holder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     if (onItemClickListener != null) {
@@ -47,7 +47,7 @@ public abstract class ClassicRecyclerViewAdapter<D> extends RecyclerView.Adapter
                     }
                     return false;
                 }
-            });*/
+            });
         }
     }
 
@@ -179,5 +179,17 @@ public abstract class ClassicRecyclerViewAdapter<D> extends RecyclerView.Adapter
      */
     public abstract void findBindView(int position, ClassicRecyclerViewHolder classicRecyclerViewHolder);
 
+    private ClassicRVHeaderFooterAdapter.OnItemClickListener onItemClickListener;
+    public void setOnItemClickListener(ClassicRVHeaderFooterAdapter.OnItemClickListener onItemClickListener) {
+        this.onItemClickListener = onItemClickListener;
+    }
+    public static abstract class  OnItemClickListener {
 
+        public void onItemClick(View view, int position) {
+        }
+
+        public boolean onItemLongClick(View view, int position) {
+            return false;
+        }
+    }
 }
