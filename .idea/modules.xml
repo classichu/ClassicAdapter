@@ -3,11 +3,8 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/ClassicAdapter.iml" filepath="$PROJECT_DIR$/ClassicAdapter.iml" />
-      <module fileurl="file://E:\LouisGit\CommLib\ClassicAdapter\ClassicAdapter.iml" filepath="E:\LouisGit\CommLib\ClassicAdapter\ClassicAdapter.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
-      <module fileurl="file://E:\LouisGit\CommLib\ClassicAdapter\app\app.iml" filepath="E:\LouisGit\CommLib\ClassicAdapter\app\app.iml" />
       <module fileurl="file://$PROJECT_DIR$/library/library.iml" filepath="$PROJECT_DIR$/library/library.iml" />
-      <module fileurl="file://E:\LouisGit\CommLib\ClassicAdapter\library\library.iml" filepath="E:\LouisGit\CommLib\ClassicAdapter\library\library.iml" />
     </modules>
   </component>
 </project>

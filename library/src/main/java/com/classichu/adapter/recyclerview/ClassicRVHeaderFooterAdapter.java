@@ -41,7 +41,7 @@ public abstract class ClassicRVHeaderFooterAdapter<D> extends RecyclerView.Adapt
     private SparseArray<View> mFooterViews = new SparseArray<>();
     private View mEmptyView;
 
-    protected List<D> mDataList=new ArrayList<>();
+    protected List<D> mDataList = new ArrayList<>();
     private int mItemLayoutId;
     private Context mContext;
 
@@ -197,7 +197,7 @@ public abstract class ClassicRVHeaderFooterAdapter<D> extends RecyclerView.Adapt
     @Override
     public int getItemCount() {
         int count = mDataList.size();
-        if (count == 0) {
+        if (count == 0 && mEmptyView != null) {
             count = 1;//empty view
         }
         if (mHeaderViews.size() > 0) {
@@ -615,10 +615,12 @@ public abstract class ClassicRVHeaderFooterAdapter<D> extends RecyclerView.Adapt
     }
 
     private OnItemClickListener onItemClickListener;
+
     public void setOnItemClickListener(OnItemClickListener onItemClickListener) {
         this.onItemClickListener = onItemClickListener;
     }
-    public static abstract class  OnItemClickListener {
+
+    public static abstract class OnItemClickListener {
 
         public void onItemClick(View view, int position) {
         }
